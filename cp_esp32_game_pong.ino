@@ -29,7 +29,7 @@ void setup() {
 
 
 void loop() {
-  audio.beep_off();
+  //audio.beep_off();
   int rotate = rotateButton.read();
   if (rotate != 0) {
     Serial.printf("rotate: %d\n", rotate);
@@ -64,7 +64,7 @@ void loop() {
       } else {
 
       }
-      delay(5000);
+      delay(50);
     }
 
   }
