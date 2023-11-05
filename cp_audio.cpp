@@ -10,10 +10,11 @@ void CPAudio::init() {
 }
 
 void CPAudio::beep() {
-  Serial.println("beep on");
+  //Serial.println("beep on");
   digitalWrite(CP_BEEP_GPIO, HIGH); // turn on
-  //delay(10);//延时200ms
-  //digitalWrite(CP_BEEP_GPIO, LOW); // turn off
+  delay(50);//延时200ms
+  digitalWrite(CP_BEEP_GPIO, LOW); // turn off
+  delay(50);//延时200ms
   /*
   t.setTimeout([]() {
     Serial.println("beep off");
@@ -25,6 +26,6 @@ void CPAudio::beep() {
 }
 
 void CPAudio::beep_off() {
-  Serial.println("beep off");
-  digitalWrite(CP_BEEP_GPIO, LOW); // turn off
+  //Serial.println("beep off");
+  //digitalWrite(CP_BEEP_GPIO, LOW); // turn off
 }
