@@ -1,5 +1,4 @@
 #include "cp_struct.h"
-#include "cp_gfx_display.h"
 #include "cp_snake.h"
 #include "cp_ps2_joystick.h"
 #include "cp_audio.h"
@@ -8,7 +7,6 @@
 
 CPSnake snake;
 CPLCD128X64Display display;
-//CPGFXDisplay display;
 CPPS2Joystick joystick;
 CPAudio audio;
 CPRotateButton rotateButton;
