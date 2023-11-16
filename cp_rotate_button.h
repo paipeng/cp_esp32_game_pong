@@ -2,19 +2,22 @@
 #define _CP_ROTATE_BUTTON_H_
 
 #include <Arduino.h>
-#include "AiEsp32RotaryEncoder.h"
+
+
+#include <OneButton.h>
+#include <ESP32Encoder.h>
+
 
 class CPRotateButton {
 public:
   CPRotateButton();
   void init();
   int read();
-private:
-  float getFrequency();
 
 private:
   int clk;
-  AiEsp32RotaryEncoder rotaryEncoder;
+  ESP32Encoder encoder;
+  OneButton SW;
 };
 
 #endif
