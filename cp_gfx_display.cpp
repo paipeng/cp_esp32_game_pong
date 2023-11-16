@@ -1,47 +1,60 @@
 #include "cp_gfx_display.h"
 
-CPGFXDisplay::CPGFXDisplay():bus(NULL), gfx(NULL) {
 
+#define TFT_DC 13   /* DC */
+#define TFT_CS 5    /* CS */
+#define TFT_SCK 18  /* SCK */
+#define TFT_MOSI 23 /* MOSI */
+#define TFT_RST 14  /* MOSI */
+
+
+#define TFT_SCREEN_ROTATE 1
+#define TFT_SCREE_WIDTH 240
+#define TFT_SCREE_HEIGHT 320
+
+
+CPGFXDisplay::CPGFXDisplay()
+  : bus(NULL), gfx(NULL) {
 }
 
 void CPGFXDisplay::init() {
   bus = new Arduino_ESP32SPI(
-    TFT_DC, 
-    TFT_CS /* CS */, 
-    TFT_SCK /* SCK */, 
-    TFT_MOSI /* MOSI */, 
-    GFX_NOT_DEFINED /* MISO */, 
+    TFT_DC,
+    TFT_CS /* CS */,
+    TFT_SCK /* SCK */,
+    TFT_MOSI /* MOSI */,
+    GFX_NOT_DEFINED /* MISO */,
     VSPI /* spi_num */
-    );
+  );
   gfx = new Arduino_ST7789(
-    bus, 
-    TFT_RST /* RST */, 
-    TFT_SCREEN_ROTATE /* rotation */, 
+    bus,
+    TFT_RST /* RST */,
+    TFT_SCREEN_ROTATE /* rotation */,
     true /* IPS */,
-    TFT_SCREE_WIDTH /* width */, 
+    TFT_SCREE_WIDTH /* width */,
     TFT_SCREE_HEIGHT /* height */,
-    0 /* col offset 1 */, 
+    0 /* col offset 1 */,
     0 /* row offset 1 */
-    );
+  );
   gfx->begin();
 
 #ifdef GFX_BL
   pinMode(GFX_BL, OUTPUT);
   digitalWrite(GFX_BL, HIGH);
-#endif 
+#endif
   reset();
 }
 
 void CPGFXDisplay::update_draw(snake_point* spoints, cp_point p) {
   gfx->fillScreen(BLACK);
 #if DEBUG
-    Serial.print("food");
-    Serial.printf(" x: %4d y: %4d", p.x, p.y);
-    Serial.println("");
+  Serial.print("food");
+  Serial.printf(" x: %4d y: %4d", p.x, p.y);
+  Serial.println("");
 #endif
   gfx->fillRect(p.x, p.y, SNAKE_SIZE, SNAKE_SIZE, RED);
 #if 1
-  snake_point *current_point = spoints;
+  snake_point* current_point = spoints;
   while (current_point->next != NULL) {
     current_point = current_point->next;
 #if DEBUG
@@ -79,9 +92,8 @@ void CPGFXDisplay::game_over(int score) {
   gfx->setCursor(45, 200);
   gfx->setTextSize(2 /* x scale */, 2 /* y scale */, 0 /* pixel_margin */);
   gfx->printf("Score: %4d", score);
-
 }
 
 cp_size CPGFXDisplay::get_size() {
-  return (cp_size){TFT_SCREE_HEIGHT, TFT_SCREE_WIDTH};
+  return (cp_size){ TFT_SCREE_HEIGHT, TFT_SCREE_WIDTH };
 }
