@@ -4,7 +4,6 @@
 
 #include <AsyncTimer.h>
 
-#define CP_BEEP_GPIO 25
 
 class CPAudio {
 public:
