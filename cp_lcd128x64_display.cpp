@@ -23,9 +23,25 @@ void CPLCD128X64Display::prepare(void) {
   u8g2.setFontPosTop();
   u8g2.setFontDirection(0);
 }
+
+void CPLCD128X64Display::loop() {
+  u8g2.clearBuffer();
+  char s[2] = " ";
+  uint8_t x, y;
+  u8g2.drawStr(0, 0, "ASCII page 1");
+  for (y = 0; y < 6; y++) {
+    for (x = 0; x < 16; x++) {
+      s[0] = y * 16 + x + 32;
+      u8g2.drawStr(x * 7, y * 10 + 10, s);
+    }
+  }
+  u8g2.sendBuffer();
+}
+
 void CPLCD128X64Display::drawText(String text, int x, int y) {
   prepare();
   u8g2.drawStr(x, y, text.c_str());
+  u8g2.sendBuffer();
 }
 
 void CPLCD128X64Display::drawTextUTF8(String text, int x, int y) {
@@ -33,4 +49,5 @@ void CPLCD128X64Display::drawTextUTF8(String text, int x, int y) {
   u8g2.setFont(u8g2_font_wqy12_t_gb2312);
   u8g2.setFontPosTop();
   u8g2.drawUTF8(x, y, text.c_str());
+  u8g2.sendBuffer();
 }

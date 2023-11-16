@@ -18,6 +18,7 @@ public:
   void clear();
   void drawText(String text, int x, int y);
   void drawTextUTF8(String text, int x, int y);
+  void loop();
 private:
   void prepare(void);
 private:

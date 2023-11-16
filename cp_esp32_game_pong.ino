@@ -26,7 +26,7 @@ void setup() {
   rotateButton.init();
 
   game_over = 0;
-  delay(5000); // 5 seconds
+  delay(5000);  // 5 seconds
 
   display.drawText("TEST", 10, 10);
 }
@@ -34,8 +34,12 @@ void setup() {
 
 void loop() {
   //audio.beep_off();
+  delay(1000);
+  display.loop();
+#if 0
   int rotate = rotateButton.read();
   if (rotate != 0) {
     Serial.printf("rotate: %d\n", rotate);
   }
+#endif
 }
