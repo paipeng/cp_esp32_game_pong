@@ -60,6 +60,7 @@ typedef struct _cp_ball {
   cp_point position;
   int size;
   int speed;
+  float angle;
 } cp_ball;
 
 

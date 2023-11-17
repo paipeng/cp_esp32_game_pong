@@ -17,9 +17,6 @@ int game_over = 0;
 rotate_button joysticks[2];
 void setup() {
   Serial.begin(115200);
-
-
-
   //audio.init();
   display.init();
   // init
@@ -33,7 +30,7 @@ void setup() {
   delay(5000);  // 5 seconds
   Serial.println("Start game...");
 
-  //display.drawText("TEST", (cp_point){10, 10});
+  //display.drawText("Coleco Telstar TV Game", (cp_point){70, 10});
 
   display.drawGame(pong.getBall(), pong.getPlayers());
 }
@@ -41,18 +38,13 @@ void setup() {
 
 void loop() {
   //audio.beep_off();
-  delay(10);
-  //display.loop();
+  delay(100);
 
-#if 1
   joysticks[0] = player1.read();
-  if (joysticks[0].update != 0) {
-    //Serial.printf("rotate dir: %d vol: %d button: %d rotate: %d\n", joysticks[0].direction, joysticks[0].volumn, joysticks[0].button, joysticks[0].rotate);
-    //display.move(joystick);
-  }
   joysticks[1] = joysticks[0];
+
+  pong.updateBall();
   if (pong.movePlayers(joysticks)) {
     display.drawGame(pong.getBall(), pong.getPlayers());
   }
-#endif
 }

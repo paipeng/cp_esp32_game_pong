@@ -8,10 +8,14 @@ CPGamePong::CPGamePong() {
 }
 
 void CPGamePong::init(cp_rectangle field) {
+  randomSeed(analogRead(0));
+
   this->field = field;
   players = (cp_player*)malloc(sizeof(cp_player) * 2);
 
   ball.position = (cp_point){ this->field.start_point.x + (this->field.end_point.x - this->field.start_point.x) / 2, 0 };
+  ball.speed = 2;
+  ball.angle = random(0, 359) / 2.0 / M_PI;
   players[0].size = PLAYER_SIZE;
   players[0].position = (cp_point){ this->field.start_point.x,
                                     this->field.start_point.y + (this->field.end_point.y - this->field.start_point.y) / 2 - players[0].size / 2 };
@@ -26,7 +30,12 @@ cp_player* CPGamePong::getPlayers() {
 cp_ball CPGamePong::getBall() {
   return ball;
 }
-
+void CPGamePong::updateBall() {
+  cp_point current_position = ball.position;
+  float distance = ball.speed;
+  ball.position.x += distance * cos(ball.angle);
+  ball.position.y += distance * sin(ball.angle);
+}
 
 bool CPGamePong::movePlayers(rotate_button* players_joysticks) {
   bool moved = false;
@@ -49,10 +58,10 @@ bool CPGamePong::movePlayers(rotate_button* players_joysticks) {
         players[i].position.x = field.end_point.x - 1;
       }
 
-      if (players[i].position.y < field.start_point.y) {
-        players[i].position.y = field.start_point.y;
-      } else if (players[i].position.y >= field.end_point.y) {
-        players[i].position.y = field.end_point.y - 1;
+      if ((players[i].position.y - players[i].size / 2) < field.start_point.y) {
+        players[i].position.y = field.start_point.y + players[i].size / 2;
+      } else if ((players[i].position.y + players[i].size / 2) >= field.end_point.y) {
+        players[i].position.y = field.end_point.y - 1 - players[i].size / 2;
       }
 
       //Serial.printf("player %d move to: %d-%d\n", i, players[i].position.x, players[i].position.y);

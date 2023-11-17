@@ -23,6 +23,7 @@ public:
   void move(rotate_button joystick);
   void updateDraw();
   void drawGameField();
+  void drawGameInfo();
   void drawGame(cp_ball ball, cp_player* players);
   cp_size getDisplaySize();
   cp_rectangle getFieldRectangle();

@@ -64,9 +64,11 @@ void CPLCD128X64Display::drawTextUTF8(String text, cp_point position) {
 }
 
 void CPLCD128X64Display::updateDraw() {
+#if 0
   prepare();
   u8g2.drawStr(this->position.x, this->position.y, this->text.c_str());
   u8g2.sendBuffer();
+#endif
 }
 void CPLCD128X64Display::move(rotate_button joystick) {
   if (joystick.direction == 0) {  // right
@@ -108,9 +110,17 @@ void CPLCD128X64Display::drawGameField() {
   }
   u8g2.drawLine((field.end_point.x - field.start_point.x) / 2, 1, (field.end_point.x - field.start_point.x) / 2, field.end_point.y - 2);
 }
+
+void CPLCD128X64Display::drawGameInfo() {
+  prepare();
+  u8g2.drawStr(70, 5, "Telstar");
+}
+
 void CPLCD128X64Display::drawGame(cp_ball ball, cp_player* players) {
   //Serial.println("drawGame");
   u8g2.clearBuffer();
+  //drawGameInfo();
+  //u8g2.updateDisplayArea(field.start_point.x, field.start_point.y, field.start_point.x + field.end_point.x, field.start_point.y + field.end_point.y);
   drawGameField();
 
   for (int i = 0; i < 2; i++) {
