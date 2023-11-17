@@ -49,7 +49,7 @@ int CPGamePong::updateBall() {
   }
 
   // ball out of field
-  if (ball.position.x == field.start_point.x || ball.position.x = field.end_point.x) {
+  if (ball.position.x == field.start_point.x || ball.position.x == field.end_point.x) {
     return -1;
   }
 
