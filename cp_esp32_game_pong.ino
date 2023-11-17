@@ -5,10 +5,10 @@
 #include "cp_rotate_button.h"
 #include "cp_lcd128x64_display.h"
 
-CPSnake snake;
+//CPSnake snake;
 CPLCD128X64Display display;
-CPPS2Joystick joystick;
-CPAudio audio;
+//CPPS2Joystick joystick;
+//CPAudio audio;
 CPRotateButton rotateButton;
 
 int game_over = 0;
@@ -17,8 +17,8 @@ void setup() {
   Serial.begin(115200);
 
   // init
-  audio.init();
-  display.init();
+  //audio.init();
+  //display.init();
   //joystick.init();
   //snake.init(display.get_size());
   rotateButton.init();
@@ -26,15 +26,15 @@ void setup() {
   game_over = 0;
   delay(5000);  // 5 seconds
 
-  display.drawText("TEST", 10, 10);
+  //display.drawText("TEST", 10, 10);
 }
 
 
 void loop() {
   //audio.beep_off();
-  delay(1000);
-  display.loop();
-#if 0
+  delay(100);
+  //display.loop();
+#if 1
   int rotate = rotateButton.read();
   if (rotate != 0) {
     Serial.printf("rotate: %d\n", rotate);

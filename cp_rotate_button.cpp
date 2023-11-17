@@ -6,19 +6,15 @@
 #define EC11_B_PIN 33
 #define EC11_K_PIN 34  //按键引脚
 
-
-
-int lastEncoderValue = 0;
-int now_count = 0;
-int mode = 0;  //0,1两种mode,可自行添加
-bool activate = true;
+static CPRotateButton* pButton = NULL;
 
 //按键单击回调函数
 void click() {
-  if (mode == 0) {
+  Serial.println("Click");
+  if (pButton->mode == 0) {
     Serial.println("Click: MUTE");
   }
-  if (mode == 1) {
+  if (pButton->mode == 1) {
     Serial.println("Enter");
   }
 }
@@ -26,75 +22,76 @@ void click() {
 
 //按键长按回调函数
 void longclick() {
-  if (activate) {  //如果旋钮转动，则不切换状态
+  Serial.println("longclick");
+  if (pButton->activate) {  //如果旋钮转动，则不切换状态
     Serial.println("Longclick: Mode Change");
     Serial.print("current mode: ");
-    if (mode == 0) {
-      mode = 1;
+    if (pButton->mode == 0) {
+      pButton->mode = 1;
       Serial.println("Arrow");
       return;
     }
-    if (mode == 1) {
-      mode = 0;
+    if (pButton->mode == 1) {
+      pButton->mode = 0;
       Serial.println("Media");
       return;
     }
   }
-  activate = true;
+  pButton->activate = true;
 }
 
 //按键双击回调函数
 void doubleclick() {
-  if (mode == 0) {
+  Serial.println("doubleclick");
+  if (pButton->mode == 0) {
     Serial.println("Doubleclick: Input test");
   }
-  if (mode == 1) {
+  if (pButton->mode == 1) {
     Serial.println("Doubleclick: Input test");
   }
 }
 
 CPRotateButton::CPRotateButton()
   : clk(HIGH),
-    SW(EC11_K_PIN, true) {
+    button(EC11_K_PIN, true), lastEncoderValue(0), now_count(0), mode(0), activate(true) {
+  pButton = this;
+  ESP32Encoder::useInternalWeakPullResistors = UP;
 }
 
 void CPRotateButton::init() {
   Serial.println("CPRotateButton::init");
 
-  ESP32Encoder::useInternalWeakPullResistors = UP;
   encoder.attachSingleEdge(EC11_A_PIN, EC11_B_PIN);
 
   pinMode(EC11_K_PIN, INPUT_PULLUP);
 
   //初始化按键事件检测
-  SW.attachClick(click);
-  SW.attachDoubleClick(doubleclick);
-  SW.attachLongPressStop(longclick);
-  SW.setDebounceTicks(20);  //滤波(ms)
-  SW.setClickTicks(200);
-  SW.setPressTicks(500);
+  button.attachClick(click);
+  button.attachDoubleClick(doubleclick);
+  button.attachLongPressStop(longclick);
+  button.setDebounceTicks(20);  //滤波(ms)
+  button.setClickTicks(200);
+  button.setPressTicks(500);
 }
 
 int CPRotateButton::read() {
-  SW.tick();
+  button.tick();
 
   if (lastEncoderValue != encoder.getCount()) {
     now_count = encoder.getCount();
     if (now_count != lastEncoderValue) {
-      if (!SW.isIdle()) {  //检测按键是否空闲
+      if (!button.isIdle()) {  //检测按键是否空闲
         activate = false;
-        Serial.print("(Long_pressed)Encoder value: ");
-        Serial.println(now_count);
+        Serial.printf("(Long_pressed)Encoder value: %d\n", now_count);
       } else {
-        Serial.print("Encoder value: ");
-        Serial.println(now_count);
+        Serial.printf("Encoder value: %d\n", now_count);
       }
     }
 
     if (now_count > lastEncoderValue) {
-      if (!SW.isIdle()) {  //检测按键是否空闲
-        if (mode == 0) {}  //模式0按钮按下顺时针功能
-        if (mode == 1) {   //模式1按钮按下顺时针功能
+      if (!button.isIdle()) {  //检测按键是否空闲
+        if (mode == 0) {}      //模式0按钮按下顺时针功能
+        if (mode == 1) {       //模式1按钮按下顺时针功能
           Serial.println("DOWN_ARROW");
         }
       } else {
@@ -107,9 +104,9 @@ int CPRotateButton::read() {
       }
     }
     if (now_count < lastEncoderValue) {
-      if (!SW.isIdle()) {  //检测按键是否空闲
-        if (mode == 0) {}  //模式0按钮按下逆时针功能
-        if (mode == 1) {   //模式1按钮按下逆时针功能
+      if (!button.isIdle()) {  //检测按键是否空闲
+        if (mode == 0) {}      //模式0按钮按下逆时针功能
+        if (mode == 1) {       //模式1按钮按下逆时针功能
           Serial.println("UP_ARROW");
         }
       } else {
@@ -123,4 +120,5 @@ int CPRotateButton::read() {
     }
     lastEncoderValue = now_count;
   }
+  return now_count;
 }
