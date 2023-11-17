@@ -25,6 +25,15 @@ typedef struct _ps2_joystick {
   int right;
 } ps2_joystick;
 
+typedef struct _rotate_button {
+  int rotate;
+  int button;
+  int update;
+  int direction;
+  int volumn;
+} rotate_button;
+
+
 typedef struct _cp_size {
   int width;
   int height;

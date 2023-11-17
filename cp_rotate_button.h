@@ -7,12 +7,14 @@
 #include <OneButton.h>
 #include <ESP32Encoder.h>
 
+#include "cp_struct.h"
+
 
 class CPRotateButton {
 public:
   CPRotateButton();
   void init();
-  int read();
+  rotate_button read();
 
 private:
   int clk;
