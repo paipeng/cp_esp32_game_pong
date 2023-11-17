@@ -15,7 +15,7 @@ void CPGamePong::init(cp_rectangle field) {
 
   ball.position = (cp_point){ this->field.start_point.x + (this->field.end_point.x - this->field.start_point.x) / 2,
                               this->field.start_point.y + (this->field.end_point.y - this->field.start_point.y) / 2 };
-  ball.speed = 1;
+  ball.speed = 2;
   ball.angle = random(0, 359) / 2.0 / M_PI;
   Serial.printf("random ball angle: %.02f\n", ball.angle);
   players[0].size = PLAYER_SIZE;
@@ -32,11 +32,35 @@ cp_player* CPGamePong::getPlayers() {
 cp_ball CPGamePong::getBall() {
   return ball;
 }
-void CPGamePong::updateBall() {
+
+int CPGamePong::updateBall() {
   cp_point current_position = ball.position;
   float distance = ball.speed;
   ball.position.x += distance * cos(ball.angle);
   ball.position.y += distance * sin(ball.angle);
+
+  // ball played back by player
+  if (ball.position.x == players[0].position.x && ball.position.y >= players[0].position.x - players[0].size) {
+    ball.angle += M_PI;
+    return 0;
+  } else {
+    ball.angle += M_PI;
+    return 0;
+  }
+
+  // ball out of field
+  if (ball.position.x == field.start_point.x || ball.position.x = field.end_point.x) {
+    return -1;
+  }
+
+  // ball reflected by wall
+  if (ball.position.y == field.start_point.y) {
+    ball.angle += M_PI;
+  } else if (ball.position.y == field.end_point.y) {
+    ball.angle += M_PI;
+  }
+
+  return 0;
 }
 
 bool CPGamePong::movePlayers(rotate_button* players_joysticks) {

@@ -10,7 +10,7 @@ public:
   cp_player* getPlayers();
   cp_ball getBall();
   bool movePlayers(rotate_button* players_joysticks);
-  void updateBall();
+  int updateBall();
 
 private:
 

@@ -40,12 +40,17 @@ void setup() {
 void loop() {
   //audio.beep_off();
   delay(100);
+  if (game_over == 0) {
+    joysticks[0] = player1.read();
+    joysticks[1] = joysticks[0];
 
-  joysticks[0] = player1.read();
-  joysticks[1] = joysticks[0];
-
-  if (pong.movePlayers(joysticks)) {
-    pong.updateBall();
-    display.drawGame(pong.getBall(), pong.getPlayers());
+    if (pong.movePlayers(joysticks)) {
+      if (pong.updateBall() == -1) {
+        game_over = 1;
+      }
+      display.drawGame(pong.getBall(), pong.getPlayers());
+    }
+  } else {
+    Serial.println("Game Over!");
   }
 }
