@@ -13,9 +13,11 @@ void CPGamePong::init(cp_rectangle field) {
   this->field = field;
   players = (cp_player*)malloc(sizeof(cp_player) * 2);
 
-  ball.position = (cp_point){ this->field.start_point.x + (this->field.end_point.x - this->field.start_point.x) / 2, 0 };
-  ball.speed = 2;
+  ball.position = (cp_point){ this->field.start_point.x + (this->field.end_point.x - this->field.start_point.x) / 2,
+                              this->field.start_point.y + (this->field.end_point.y - this->field.start_point.y) / 2 };
+  ball.speed = 1;
   ball.angle = random(0, 359) / 2.0 / M_PI;
+  Serial.printf("random ball angle: %.02f\n", ball.angle);
   players[0].size = PLAYER_SIZE;
   players[0].position = (cp_point){ this->field.start_point.x,
                                     this->field.start_point.y + (this->field.end_point.y - this->field.start_point.y) / 2 - players[0].size / 2 };

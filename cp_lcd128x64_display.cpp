@@ -130,6 +130,11 @@ void CPLCD128X64Display::drawGame(cp_ball ball, cp_player* players) {
                   players[i].position.x,
                   players[i].position.y + players[i].size / 2);
   }
+
+  // draw ball
+  u8g2.drawLine(ball.position.x, ball.position.y, ball.position.x, ball.position.y);
+
+  
   u8g2.sendBuffer();
 }
 
