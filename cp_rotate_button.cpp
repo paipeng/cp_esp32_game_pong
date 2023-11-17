@@ -109,6 +109,7 @@ rotate_button CPRotateButton::read() {
         if (mode == 0) {  //模式0顺时针功能
           Serial.println("MEDIA_VOLUME_UP");
           rb.volumn = 1;
+          rb.direction = 3;
         }
         if (mode == 1) {  //模式1顺时针功能
           Serial.println("RIGHT_ARROW");
@@ -126,6 +127,7 @@ rotate_button CPRotateButton::read() {
         if (mode == 0) {  //模式0逆时针功能
           Serial.println("MEDIA_VOLUME_DOWN");
           rb.volumn = -1;
+          rb.direction = 1;
         }
         if (mode == 1) {  //模式1逆时针功能
           Serial.println("LEFT_ARROW");

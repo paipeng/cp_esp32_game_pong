@@ -85,7 +85,9 @@ void CPLCD128X64Display::move(rotate_button joystick) {
   } else if (position.y >= screenHeight) {
     position.y = screenHeight - 1;
   }
-  
 
+  Serial.printf("move to: %d-%d\n", position.x, position.y);
+
+  u8g2.clearBuffer();
   updateDraw();
 }
