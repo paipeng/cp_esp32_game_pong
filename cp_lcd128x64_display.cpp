@@ -7,7 +7,7 @@
 
 
 CPLCD128X64Display::CPLCD128X64Display()
-  : u8g2(U8G2_R0, CPIOT_LCD_128X64_E, CPIOT_LCD_128X64_RW, CPIOT_LCD_128X64_RS, CPIOT_LCD_128X64_RES), text(""), screenSize((cp_size) {0, 0}), field((cp_rectangle){(cp_point){0, 0}, (cp_point){0, 0}}) {
+  : u8g2(U8G2_R0, CPIOT_LCD_128X64_E, CPIOT_LCD_128X64_RW, CPIOT_LCD_128X64_RS, CPIOT_LCD_128X64_RES), text(""), screenSize((cp_size){ 0, 0 }), field((cp_rectangle){ (cp_point){ 0, 0 }, (cp_point){ 0, 0 } }) {
 }
 void CPLCD128X64Display::init(int screenWidth, int screenHeight) {
   screenSize.width = screenWidth;
@@ -98,7 +98,6 @@ void CPLCD128X64Display::move(rotate_button joystick) {
   u8g2.clearBuffer();
   drawGameField();
   updateDraw();
-  drawGameField();
 }
 
 
@@ -110,13 +109,18 @@ void CPLCD128X64Display::drawGameField() {
   u8g2.drawLine((field.end_point.x - field.start_point.x) / 2, 1, (field.end_point.x - field.start_point.x) / 2, field.end_point.y - 2);
 }
 void CPLCD128X64Display::drawGame(cp_ball ball, cp_player* players) {
+  //Serial.println("drawGame");
   u8g2.clearBuffer();
   drawGameField();
-  
-  for (int i = 0; i < 2; i++) {
-    u8g2.drawLine(players[i].position.x, players[i].position.x, 1, players[i].size);
 
+  for (int i = 0; i < 2; i++) {
+    //Serial.printf("player %d x: %d y: %d size: %d\n", i, players[i].position.x, players[i].position.y, players[i].size);
+    u8g2.drawLine(players[i].position.x,
+                  players[i].position.y - players[i].size / 2,
+                  players[i].position.x,
+                  players[i].position.y + players[i].size / 2);
   }
+  u8g2.sendBuffer();
 }
 
 cp_size CPLCD128X64Display::getDisplaySize() {

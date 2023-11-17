@@ -15,7 +15,7 @@ void CPGamePong::init(cp_rectangle field) {
   players[0].position = (cp_point){ this->field.start_point.x,
                                     this->field.start_point.y + (this->field.end_point.y - this->field.start_point.y) / 2 - players[0].size / 2 };
   players[1].size = PLAYER_SIZE;
-  players[1].position = (cp_point){ this->field.end_point.x,
+  players[1].position = (cp_point){ this->field.end_point.x-1,
                                     this->field.start_point.y + (this->field.end_point.y - this->field.start_point.y) / 2 - players[0].size / 2 };
 }
 
@@ -27,10 +27,11 @@ cp_ball CPGamePong::getBall() {
 }
 
 
-void CPGamePong::movePlayers(rotate_button* players_joysticks) {
+bool CPGamePong::movePlayers(rotate_button* players_joysticks) {
+  bool moved = false;
   for (int i = 0; i < PLAYER_NUM; i++) {
-
-    if (players_joysticks[i].update == 1) {
+    if (players_joysticks[i].update != 0) {
+      moved = true;
       if (players_joysticks[i].direction == 0) {  // right
         players[i].position.x++;
       } else if (players_joysticks[i].direction == 1) {  // down
@@ -56,4 +57,5 @@ void CPGamePong::movePlayers(rotate_button* players_joysticks) {
       Serial.printf("player %d move to: %d-%d\n", i, players[i].position.x, players[i].position.y);
     }
   }
+  return moved;
 }

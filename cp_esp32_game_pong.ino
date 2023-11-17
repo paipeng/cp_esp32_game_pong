@@ -45,12 +45,13 @@ void loop() {
 
 #if 1
   joysticks[0] = player1.read();
-  //if (joystick.update != 0) {
-    //Serial.printf("rotate dir: %d vol: %d button: %d rotate: %d\n", joystick.direction, joystick.volumn, joystick.button, joystick.rotate);
+  if (joysticks[0].update != 0) {
+    Serial.printf("rotate dir: %d vol: %d button: %d rotate: %d\n", joysticks[0].direction, joysticks[0].volumn, joysticks[0].button, joysticks[0].rotate);
     //display.move(joystick);
-  //}
+  }
   joysticks[1] = joysticks[0];
-  pong.movePlayers(joysticks);
-  display.drawGame(pong.getBall(), pong.getPlayers());
+  if (pong.movePlayers(joysticks)) {
+    display.drawGame(pong.getBall(), pong.getPlayers());
+  }
 #endif
 }

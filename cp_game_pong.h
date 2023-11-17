@@ -9,7 +9,7 @@ public:
   void init(cp_rectangle field);
   cp_player* getPlayers();
   cp_ball getBall();
-  void movePlayers(rotate_button* players_joysticks);
+  bool movePlayers(rotate_button* players_joysticks);
 
 private:
 
