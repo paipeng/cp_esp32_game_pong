@@ -2,6 +2,7 @@
 
 #define PLAYER_SIZE 8
 #define PLAYER_NUM 2
+#define PLAYER_MOVE_STEP 2
 
 CPGamePong::CPGamePong() {
 }
@@ -15,7 +16,7 @@ void CPGamePong::init(cp_rectangle field) {
   players[0].position = (cp_point){ this->field.start_point.x,
                                     this->field.start_point.y + (this->field.end_point.y - this->field.start_point.y) / 2 - players[0].size / 2 };
   players[1].size = PLAYER_SIZE;
-  players[1].position = (cp_point){ this->field.end_point.x-1,
+  players[1].position = (cp_point){ this->field.end_point.x - 1,
                                     this->field.start_point.y + (this->field.end_point.y - this->field.start_point.y) / 2 - players[0].size / 2 };
 }
 
@@ -33,13 +34,13 @@ bool CPGamePong::movePlayers(rotate_button* players_joysticks) {
     if (players_joysticks[i].update != 0) {
       moved = true;
       if (players_joysticks[i].direction == 0) {  // right
-        players[i].position.x++;
+        players[i].position.x += PLAYER_MOVE_STEP;
       } else if (players_joysticks[i].direction == 1) {  // down
-        players[i].position.y++;
+        players[i].position.y += PLAYER_MOVE_STEP;
       } else if (players_joysticks[i].direction == 2) {  // left
-        players[i].position.x--;
+        players[i].position.x -= PLAYER_MOVE_STEP;
       } else if (players_joysticks[i].direction == 3) {  // up
-        players[i].position.y--;
+        players[i].position.y -= PLAYER_MOVE_STEP;
       }
 
       if (players[i].position.x < field.start_point.x) {
@@ -54,7 +55,7 @@ bool CPGamePong::movePlayers(rotate_button* players_joysticks) {
         players[i].position.y = field.end_point.y - 1;
       }
 
-      Serial.printf("player %d move to: %d-%d\n", i, players[i].position.x, players[i].position.y);
+      //Serial.printf("player %d move to: %d-%d\n", i, players[i].position.x, players[i].position.y);
     }
   }
   return moved;

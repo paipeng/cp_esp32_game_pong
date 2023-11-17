@@ -107,7 +107,7 @@ rotate_button CPRotateButton::read() {
         }
       } else {
         if (mode == 0) {  //模式0顺时针功能
-          Serial.println("MEDIA_VOLUME_UP");
+          //Serial.println("MEDIA_VOLUME_UP");
           rb.volumn = 1;
           rb.direction = 3;
         }
@@ -125,7 +125,7 @@ rotate_button CPRotateButton::read() {
         }
       } else {
         if (mode == 0) {  //模式0逆时针功能
-          Serial.println("MEDIA_VOLUME_DOWN");
+          //Serial.println("MEDIA_VOLUME_DOWN");
           rb.volumn = -1;
           rb.direction = 1;
         }
