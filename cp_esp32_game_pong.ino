@@ -26,19 +26,19 @@ void setup() {
   game_over = 0;
   delay(5000);  // 5 seconds
 
-  display.drawText("TEST", 10, 10);
+  display.drawText("TEST", (cp_point){10, 10});
 }
 
 
 void loop() {
   //audio.beep_off();
   delay(100);
-  display.loop();
+  //display.loop();
 #if 1
   rotate_button joystick = rotateButton.read();
   if (joystick.update != 0) {
     Serial.printf("rotate dir: %d vol: %d button: %d rotate: %d\n", joystick.direction, joystick.volumn, joystick.button, joystick.rotate);
-    display.move(joystick)
+    display.move(joystick);
   }
 #endif
 }

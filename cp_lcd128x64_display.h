@@ -17,8 +17,8 @@ public:
   CPLCD128X64Display();
   void init(int screenWidth = 128, int screenHeight = 64);
   void clear();
-  void drawText(String text, int x, int y);
-  void drawTextUTF8(String text, int x, int y);
+  void drawText(String text, cp_point position);
+  void drawTextUTF8(String text, cp_point position);
   void loop();
   void move(rotate_button joystick);
   void updateDraw();

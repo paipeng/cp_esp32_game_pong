@@ -40,17 +40,19 @@ void CPLCD128X64Display::loop() {
   u8g2.sendBuffer();
 }
 
-void CPLCD128X64Display::drawText(String text, cp_point position;) {
+void CPLCD128X64Display::drawText(String text, cp_point position) {
   this->text = text;
   this->position = position;
   updateDraw();
 }
 
-void CPLCD128X64Display::drawTextUTF8(String text, int x, int y) {
+void CPLCD128X64Display::drawTextUTF8(String text, cp_point position) {
+  this->text = text;
+  this->position = position;
   prepare();
   u8g2.setFont(u8g2_font_wqy12_t_gb2312);
   u8g2.setFontPosTop();
-  u8g2.drawUTF8(x, y, text.c_str());
+  u8g2.drawUTF8(position.x, position.y, text.c_str());
   u8g2.sendBuffer();
 }
 
