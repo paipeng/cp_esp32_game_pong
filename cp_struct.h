@@ -43,6 +43,10 @@ typedef struct _cp_point {
   int x;
   int y;
 } cp_point;
+typedef struct _cp_pointf {
+  float x;
+  float y;
+} cp_pointf;
 
 
 typedef struct _cp_rectangle {
@@ -57,7 +61,7 @@ typedef struct _cp_player {
 } cp_player;
 
 typedef struct _cp_ball {
-  cp_point position;
+  cp_pointf position;
   int size;
   int speed;
   float angle;

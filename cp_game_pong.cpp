@@ -5,15 +5,15 @@
 #define PLAYER_MOVE_STEP 2
 
 CPGamePong::CPGamePong() {
+  randomSeed(analogRead(0));
 }
 
 void CPGamePong::init(cp_rectangle field) {
-  randomSeed(analogRead(0));
 
   this->field = field;
   players = (cp_player*)malloc(sizeof(cp_player) * 2);
 
-  ball.position = (cp_point){ this->field.start_point.x + (this->field.end_point.x - this->field.start_point.x) / 2,
+  ball.position = (cp_pointf){ this->field.start_point.x + (this->field.end_point.x - this->field.start_point.x) / 2,
                               this->field.start_point.y + (this->field.end_point.y - this->field.start_point.y) / 2 };
   ball.speed = 2;
   ball.angle = random(0, 359) / 2.0 / M_PI;
@@ -34,7 +34,6 @@ cp_ball CPGamePong::getBall() {
 }
 
 int CPGamePong::updateBall() {
-  cp_point current_position = ball.position;
   float distance = ball.speed;
   ball.position.x += distance * cos(ball.angle);
   ball.position.y += distance * sin(ball.angle);
