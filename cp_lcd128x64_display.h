@@ -22,6 +22,10 @@ public:
   void loop();
   void move(rotate_button joystick);
   void updateDraw();
+  void drawGameField();
+  void drawGame(cp_ball ball, cp_player* players);
+  cp_size getDisplaySize();
+  cp_rectangle getFieldRectangle();
 
 private:
   void prepare(void);
@@ -29,7 +33,7 @@ private:
   U8G2_ST7920_128X64_F_SW_SPI u8g2;
   cp_point position;
   String text;
-  int screenWidth;
-  int screenHeight;
+  cp_size screenSize;
+  cp_rectangle field;
 };
 #endif

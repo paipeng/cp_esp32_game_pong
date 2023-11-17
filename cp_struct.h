@@ -45,6 +45,24 @@ typedef struct _cp_point {
 } cp_point;
 
 
+typedef struct _cp_rectangle {
+  cp_point start_point;
+  cp_point end_point;
+} cp_rectangle;
+
+
+typedef struct _cp_player {
+  cp_point position;
+  int size;
+} cp_player;
+
+typedef struct _cp_ball {
+  cp_point position;
+  int size;
+  int speed;
+} cp_ball;
+
+
 
 typedef struct _snake_point {
   cp_point position;

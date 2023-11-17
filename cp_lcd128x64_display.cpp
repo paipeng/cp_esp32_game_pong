@@ -5,13 +5,20 @@
 #define CPIOT_LCD_128X64_RS 5   /* CS=*/
 #define CPIOT_LCD_128X64_RES 22 /* reset=*/
 
+
 CPLCD128X64Display::CPLCD128X64Display()
-  : u8g2(U8G2_R0, CPIOT_LCD_128X64_E, CPIOT_LCD_128X64_RW, CPIOT_LCD_128X64_RS, CPIOT_LCD_128X64_RES), text(""), screenWidth(0), screenHeight(0) {
+  : u8g2(U8G2_R0, CPIOT_LCD_128X64_E, CPIOT_LCD_128X64_RW, CPIOT_LCD_128X64_RS, CPIOT_LCD_128X64_RES), text(""), screenSize((cp_size) {0, 0}), field((cp_rectangle){(cp_point){0, 0}, (cp_point){0, 0}}) {
 }
 void CPLCD128X64Display::init(int screenWidth, int screenHeight) {
-  this->screenWidth = screenWidth;
-  this->screenHeight = screenHeight;
+  screenSize.width = screenWidth;
+  screenSize.height = screenHeight;
   u8g2.begin();
+
+  field.start_point = (cp_point){ 0, 0 };
+  field.end_point = (cp_point){ screenHeight, screenHeight };
+
+  drawGameField();
+  u8g2.sendBuffer();
 }
 void CPLCD128X64Display::clear() {
   u8g2.clearBuffer();
@@ -74,20 +81,48 @@ void CPLCD128X64Display::move(rotate_button joystick) {
     position.y--;
   }
 
-  if (position.x < 0) {
-    position.x = 0;
-  } else if (position.x >= screenWidth) {
-    position.x = screenWidth - 1;
+  if (position.x < field.start_point.x) {
+    position.x = field.start_point.x;
+  } else if (position.x >= field.end_point.x) {
+    position.x = field.end_point.x - 1;
   }
 
-  if (position.y < 0) {
-    position.y = 0;
-  } else if (position.y >= screenHeight) {
-    position.y = screenHeight - 1;
+  if (position.y < field.start_point.y) {
+    position.y = field.start_point.y;
+  } else if (position.y >= field.end_point.y) {
+    position.y = field.end_point.y - 1;
   }
 
   Serial.printf("move to: %d-%d\n", position.x, position.y);
 
   u8g2.clearBuffer();
+  drawGameField();
   updateDraw();
+  drawGameField();
+}
+
+
+void CPLCD128X64Display::drawGameField() {
+  for (int i = field.start_point.x; i < field.end_point.x; i += 4) {
+    u8g2.drawLine(i, 0, i + 2, 0);
+    u8g2.drawLine(i, field.end_point.y - 1, i + 2, field.end_point.y - 1);
+  }
+  u8g2.drawLine((field.end_point.x - field.start_point.x) / 2, 1, (field.end_point.x - field.start_point.x) / 2, field.end_point.y - 2);
+}
+void CPLCD128X64Display::drawGame(cp_ball ball, cp_player* players) {
+  u8g2.clearBuffer();
+  drawGameField();
+  
+  for (int i = 0; i < 2; i++) {
+    u8g2.drawLine(players[i].position.x, players[i].position.x, 1, players[i].size);
+
+  }
+}
+
+cp_size CPLCD128X64Display::getDisplaySize() {
+  return screenSize;
+}
+
+cp_rectangle CPLCD128X64Display::getFieldRectangle() {
+  return field;
 }
